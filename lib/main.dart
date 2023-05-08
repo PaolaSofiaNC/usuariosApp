@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:usuarios/src/provider/visibilidad_password.dart';
 import 'package:usuarios/src/screens/principal.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body:Principal()
+    return ChangeNotifierProvider<VisibilidadPassword>(
+      create: (_) => VisibilidadPassword(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: Principal(),
+        ),
       ),
-
     );
   }
 }
