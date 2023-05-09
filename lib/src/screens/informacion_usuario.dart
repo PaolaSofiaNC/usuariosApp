@@ -32,8 +32,8 @@ class InformacionUsuario extends StatelessWidget {
       opacity: 0.8,
       child: Container(
         color: Colors.black,
-            height: 511,
-            width: 400,
+            height: 800,
+            width: 500,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,

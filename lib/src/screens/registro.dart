@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usuarios/src/db/insertar_datos.dart';
+import 'package:usuarios/src/services/notification_services.dart';
 
 import '../models/usuario.dart';
 import '../witgets/widgets-principal.dart';
@@ -283,6 +284,7 @@ class Registro extends StatelessWidget {
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        mostrarNotificacion();
                         _guardarDatos();
                         Navigator.push(
                           context,
