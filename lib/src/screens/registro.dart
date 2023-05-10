@@ -126,18 +126,40 @@ class Registro extends StatelessWidget {
                       borderRadius: BorderRadius.circular(50.0),
                     ),
                   ),
-                  validator: (value) {
+                  validator: (value)  {
                     if (value!.isEmpty) {
                       return '* Ingrese el correo';
                     }
                     if (!validarCorreo.hasMatch(value)) {
                       return '* Correo inválido';
                     }
+                    
+                    bool? a;
+                    verificarCorreoExistente(value).then((res) {
+                      print("Esperando salida");
+                      print(res);
+                      if (res != null){
+                         if(res==true){
+                          a=true;
+                         }
+                      }else{
+                        if(res==false){
+                          a=false;
+                        }
+                      }
+                    });
+                    Future.delayed(Duration(milliseconds: 300 ));
 
-                    if (verificarCorreoExistente(value) != null &&
-                        verificarCorreoExistente(value) == value) {
+                    if (a==true) {
                       return '* El correo ya ha sido registrado';
-                    }
+                       }
+
+                    //print(await verificarCorreoExistente(value));
+
+                    // if (verificarCorreoExistente(value) != null &&
+                    //     verificarCorreoExistente(value) == value) {
+                    //   return '* El correo ya ha sido registrado';
+                    // }
 
                     return null; // Retorno nulo si no hay error de validación
                   },
