@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usuarios/src/screens/informacion_usuario.dart';
 
-import '../db/eliminar_datos.dart';
-import '../db/obtener_datos.dart';
+import '../witgets/widget-bd.dart';
 
 class ListaUsuarios extends StatefulWidget {
   const ListaUsuarios({super.key});
@@ -45,56 +44,71 @@ class _ListaUsuariosState extends State<ListaUsuarios> {
               itemCount: _datos.length,
               itemBuilder: (context, index) {
                 final usuario = _datos[index];
-                return Card(
-                  color: Color(0xffc437ff),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => InformacionUsuario(
-                            usuario: _datos[index],
-                            index: index,
-                          ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => InformacionUsuario(
+                          usuario: _datos[index],
+                          index: index,
                         ),
-                      );
+                      ),
+                    );
+                  },
+                  child: Dismissible(
+                    key: UniqueKey(),
+                    direction: DismissDirection.startToEnd,
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Icon(Icons.delete, color: Colors.white),
+                    ),
+                    onDismissed: (direction) {
+                      deleteUsuario(_datos[index]['id']);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            iconSize: 20,
-                            icon: const Icon(Icons.delete, color: Colors.white),
-                            onPressed: () {
-                              deleteUsuario(_datos[index]['id']);
-                            },
-                          ),
-                          if (_datos[index]['genero'] == 'Hombre')
-                            const Center(
-                              child: Icon(Icons.male,
-                                  color: Colors.blue, size: 50),
+                    child: Card(
+                      color: Color(0xffc437ff),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              iconSize: 20,
+                              icon:
+                                  const Icon(Icons.delete, color: Colors.white),
+                              onPressed: () {
+                                deleteUsuario(_datos[index]['id']);
+                                _getDatosCliente();
+                              },
                             ),
-                          if (_datos[index]['genero'] == 'Mujer')
-                            const Center(
-                              child: Icon(Icons.female,
-                                  color: Colors.pink, size: 50),
-                            ),
-                          const SizedBox(height: 8.0),
-                          Center(
-                            child: Text(
-                              _datos[index]['nombre'],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                            if (_datos[index]['genero'] == 'Hombre')
+                              const Center(
+                                child: Icon(Icons.male,
+                                    color: Colors.blue, size: 50),
+                              ),
+                            if (_datos[index]['genero'] == 'Mujer')
+                              const Center(
+                                child: Icon(Icons.female,
+                                    color: Colors.pink, size: 50),
+                              ),
+                            const SizedBox(height: 8.0),
+                            Center(
+                              child: Text(
+                                _datos[index]['nombre'],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

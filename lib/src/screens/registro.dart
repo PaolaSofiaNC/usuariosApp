@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:usuarios/src/db/insertar_datos.dart';
 import 'package:usuarios/src/services/notification_services.dart';
 
 import '../models/usuario.dart';
+import '../witgets/widget-bd.dart';
 import '../witgets/widgets-principal.dart';
 
 class Registro extends StatelessWidget {
@@ -36,19 +36,18 @@ class Registro extends StatelessWidget {
       // );
       // listaUsuarios.add(usuario);
       InsertarUsuario().agregarCliente(Usuario(
-        id:  DateTime.now().millisecondsSinceEpoch,
-        nombre: nombreController.text,
-        correo: correoController.text, 
-        password: passwordController.text, 
-        edad: edadController.text, 
-        telefono: telefonoController.text, 
-        seleccionGenero: generoSeleccionado));
-        nombreController.text='';
-        correoController.text='';
-        passwordController.text='';
-        edadController.text='';
-        telefonoController.text='';
-
+          id: DateTime.now().millisecondsSinceEpoch,
+          nombre: nombreController.text,
+          correo: correoController.text,
+          password: passwordController.text,
+          edad: edadController.text,
+          telefono: telefonoController.text,
+          seleccionGenero: generoSeleccionado));
+      nombreController.text = '';
+      correoController.text = '';
+      passwordController.text = '';
+      edadController.text = '';
+      telefonoController.text = '';
     }
   }
 
@@ -132,8 +131,15 @@ class Registro extends StatelessWidget {
                       return '* Ingrese el correo';
                     }
                     if (!validarCorreo.hasMatch(value)) {
-                      return '* Correo invalido';
+                      return '* Correo inválido';
                     }
+
+                    if (verificarCorreoExistente(value) != null &&
+                        verificarCorreoExistente(value) == value) {
+                      return '* El correo ya ha sido registrado';
+                    }
+
+                    return null; // Retorno nulo si no hay error de validación
                   },
                 ),
                 const SizedBox(height: 20),
@@ -287,10 +293,9 @@ class Registro extends StatelessWidget {
                         mostrarNotificacion();
                         _guardarDatos();
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ListaUsuarios())
-                        );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ListaUsuarios()));
                       }
                     },
                     child: const Text(
